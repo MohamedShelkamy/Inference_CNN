@@ -1,3 +1,11 @@
+#define numlayers 1
+#define numneurons 3
+#define numinputs 3
+#define numoutputs 1
+#define MAX_SIZE 1000
+
+
+
 typedef struct 
 {
     float value;
@@ -19,3 +27,7 @@ typedef struct
   layer_t *layer;
 
 }arch_t;
+
+void Forward_Propagation();
+double sigmoid(double x);
+void Read_data();
