@@ -4,30 +4,49 @@
 #include <stdlib.h>
 
 double inputs[numinputs];
-double weights[numlayers + 1][numneurons];
+double weights[numlayers + 1][numneurons][numneurons];
 double bias[numlayers + 1];
 double hidden_calculations[numneurons] = {0};
 
-void Read_data()
+void Read_data(double weight_table[numlayers + 1][numneurons][numneurons],double input_table[numinputs],double bias_table[numlayers + 1])
 {
-    double weight_table[numlayers + 1][numneurons] = {
-#include "weights.txt"
-    };
-    double input_table[numinputs] = {
-#include "input.txt"
-    };
 
-    double bias_table[numlayers + 1] = {
-#include "bias.txt"
-    };
-
-    for (int i = 0; i <= numlayers; i++)
+    for (int i = 0; i < numlayers; i++)
     {
-        for (int j = 0; j < numneurons; j++)
+
+        if (i == 0)
         {
-            weights[i][j] = weight_table[i][j];
-            printf("%d %d \n", i, j);
-            printf("%f \n", weights[i][j]);
+            for (int j = 0; j < numinputs; j++)
+            {
+                for (int k = 0; k < numneurons; k++)
+                {
+                    weights[i][j][k] = weight_table[i][j][k];
+                    printf("%d %d %d \n", i, j, k);
+                    printf("%f \n", weights[i][j][k]);
+                }
+            }  
+        }
+
+        else
+        {
+            for (int j = 0; j < numneurons; j++)
+            {
+                for (int k = 0; k < numneurons; k++)
+                {
+                    weights[i][j][k] = weight_table[i][j][k];
+                    printf("%d %d %d \n", i, j, k);
+                    printf("%f \n", weights[i][j][k]);
+                }
+            }
+        }
+    }
+    for (int i = 0; i < numoutputs; i++)
+    {
+        for (int k = 0; k < numneurons; k++)
+        {
+            weights[numlayers][k][i] = weight_table[numlayers][i][k];
+            printf("%d %d %d \n", numlayers, k, i);
+            printf("%f \n", weights[numlayers][k][i]);
         }
     }
 
@@ -44,6 +63,8 @@ void Read_data()
         printf("%d \n", i);
         printf("%f \n", bias[i]);
     }
+
+    Forward_Propagation();
 }
 
 double sigmoid(double x)
@@ -60,36 +81,53 @@ void Forward_Propagation()
 
         for (int k = 0; k < numneurons; k++)
         {
-            if (numlayers == 0)
+            if (i == 0)
             {
                 for (int j = 0; j < numinputs; j++)
                 {
-                    calc += inputs[j] * weights[i][j] + bias[i];
+                    calc += inputs[j] * weights[i][j][k] + bias[i];
                 }
             }
             else
             {
                 for (int j = 0; j < numneurons; j++)
                 {
-                    calc += hidden_calculations[j] * weights[i][j] + bias[i];
+                    calc += hidden_calculations[j] * weights[i][j][k] + bias[i];
                 }
             }
             hidden_calculations[k] = sigmoid(calc);
         }
+    }
+    FILE *file= fopen("output.txt","w");
+    if(file == NULL){
+        printf("error file is not accessible \n");
     }
 
     for (int i = 0; i < numoutputs; i++)
     {
         for (int j = 0; j < numneurons; j++)
         {
-            calc += hidden_calculations[j] * weights[numlayers - 1][j] + bias[numlayers - 1];
+            calc += hidden_calculations[j] * weights[numlayers][j][i] + bias[numlayers];
         }
-        printf("%f", calc);
+        fprintf(file, "%f \n", calc);
+
+
     }
+    fclose(file);
 }
 
-int main()
+/*int main()
 {
-    Read_data();
+    double weight_table[numlayers + 1][numneurons][numneurons] = {
+        #include "weights.txt"
+    };
+    double input_table[numinputs] = {   
+    #include "input.txt"
+    };
+
+    double bias_table[numlayers + 1] ={
+    #include "bias.txt"
+    };
+    Read_data(weight_table,input_table,bias_table);
     return 0;
-}
+}*/

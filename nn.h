@@ -30,4 +30,4 @@ typedef struct
 
 void Forward_Propagation();
 double sigmoid(double x);
-void Read_data();
+void Read_data(double weight_table[numlayers + 1][numneurons][numneurons],double input_table[numinputs],double bias_table[numlayers + 1]);
