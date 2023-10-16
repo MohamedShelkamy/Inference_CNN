@@ -3,28 +3,40 @@
 #include <math.h>
 #include <stdlib.h>
 
-int main(){
-    
-    
-    
+int main()
+{
+
     double weight_table[numlayers + 1][numneurons][numneurons] = {
-        #include "weights.txt"
+#include "weights.txt"
     };
-    double input_table[numinputs] = {   
-    #include "input.txt"
+    double input_table[numinputs] = {
+#include "input.txt"
     };
 
-    double bias_table[numlayers + 1] ={
-    #include "bias.txt"
+    double bias_table[numlayers + 1] = {
+#include "bias.txt"
     };
-    Read_data(weight_table,input_table,bias_table);
-     const char *goldenFilename = "golden.txt";
+    Read_data(weight_table, input_table, bias_table);
+    const char *goldenFilename = "golden.txt";
     const char *outputFilename = "output.txt";
+
+    FILE *file = fopen("output.txt", "w");
+    if (file == NULL)
+    {
+        printf("error file is not accessible \n");
+    }
+    for (int i = 0; i < numoutputs; i++)
+    {
+        fprintf(file, "%f \n", outputvec[i]);
+    }
+
+    fclose(file);
 
     FILE *goldenFile = fopen(goldenFilename, "r");
     FILE *outputFile = fopen(outputFilename, "r");
 
-    if (goldenFile == NULL || outputFile == NULL) {
+    if (goldenFile == NULL || outputFile == NULL)
+    {
         perror("Error opening files");
         return 1;
     }
@@ -32,16 +44,19 @@ int main(){
     int equal = 1; // Assume the files are equal initially
 
     char goldenChar, outputChar;
-    while (1) {
+    while (1)
+    {
         goldenChar = fgetc(goldenFile);
         outputChar = fgetc(outputFile);
 
-        if (goldenChar != outputChar) {
+        if (goldenChar != outputChar)
+        {
             equal = 0;
             break;
         }
 
-        if (goldenChar == EOF || outputChar == EOF) {
+        if (goldenChar == EOF || outputChar == EOF)
+        {
             break; // End of one or both files
         }
     }
@@ -49,21 +64,14 @@ int main(){
     fclose(goldenFile);
     fclose(outputFile);
 
-    if (equal) {
+    if (equal)
+    {
         printf("The files are identical.\n");
-    } else {
+    }
+    else
+    {
         printf("The files are different.\n");
     }
 
     return 0;
-    
-    
-    
-    
-    
-    return 0;
-  
-
-
-
 }
