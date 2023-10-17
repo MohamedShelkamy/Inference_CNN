@@ -4,7 +4,7 @@
 #define numoutputs 1
 #define MAX_SIZE 1000
 
-extern double outputvec[numoutputs];
+//extern double outputvec[numoutputs];
 
 typedef struct
 {
@@ -28,6 +28,6 @@ typedef struct
 } arch_t;
 
 void Forward_Propagation(double weights[numlayers + 1][numneurons][numneurons],
-                         double bias[numlayers + 1], double inputs[numinputs]);
+                         double bias[numlayers + 1], double inputs[numinputs], double outputvec[numoutputs]);
 double sigmoid(double x);
-void Read_data(double weight_table[numlayers + 1][numneurons][numneurons], double input_table[numinputs], double bias_table[numlayers + 1]);
+void Read_data(double weight_table[numlayers + 1][numneurons][numneurons], double input_table[numinputs], double bias_table[numlayers + 1],double outputvec[numoutputs]);

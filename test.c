@@ -16,7 +16,8 @@ int main()
     double bias_table[numlayers + 1] = {
 #include "bias.txt"
     };
-    Read_data(weight_table, input_table, bias_table);
+    double outputvec[numoutputs];
+    Read_data(weight_table, input_table, bias_table, outputvec);
     const char *goldenFilename = "golden.txt";
     const char *outputFilename = "output.txt";
 

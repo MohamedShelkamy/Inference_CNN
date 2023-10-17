@@ -6,7 +6,7 @@
 double hidden_calculations[numneurons] = {0};
 double outputvec[numoutputs];
 
-void Read_data(double weight_table[numlayers + 1][numneurons][numneurons],double input_table[numinputs],double bias_table[numlayers + 1])
+void Read_data(double weight_table[numlayers + 1][numneurons][numneurons],double input_table[numinputs],double bias_table[numlayers + 1],double outputvec[numoutputs])
 {
 
     double inputs[numinputs];
@@ -56,7 +56,7 @@ void Read_data(double weight_table[numlayers + 1][numneurons][numneurons],double
         bias[i] = bias_table[i];
     }
 
-    Forward_Propagation(weights,bias,inputs);
+    Forward_Propagation(weights,bias,inputs,outputvec);
 }
 
 double sigmoid(double x)
@@ -65,7 +65,7 @@ double sigmoid(double x)
 }
 
 void Forward_Propagation(double weights[numlayers + 1][numneurons][numneurons],
-    double bias[numlayers + 1], double inputs[numinputs])
+    double bias[numlayers + 1], double inputs[numinputs],double outputvec[numoutputs])
 { // Inference stage
     double calc = 0;
 
